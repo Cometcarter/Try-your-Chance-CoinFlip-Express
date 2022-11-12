@@ -2,14 +2,14 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
-
+var ObjectId = require('mongodb').ObjectId
 var db, collection;
 
 const url =
   'mongodb+srv://ellie:mindyabusiness@psapapi.yrtvq.mongodb.net/coinFlip?retryWrites=true&w=majority';
 const dbName = 'coinFlip';
 
-app.listen(7000, () => {
+app.listen(8000, () => {
   MongoClient.connect(
     url,
     {
@@ -75,9 +75,7 @@ app.post('/results', (req, res) => {
 
 app.delete('/messages', (req, res) => {
   db.collection('results').findOneAndDelete({
-    userGuess: req.body.userGuess,
-    coinFlipResult: req.body.coinFlipResult,
-    winOrLose: req.body.winOrLose
+    _id: ObjectId(req.body._id)
   },
     (err, result) => {
       if (err) return res.send(500, err);
